@@ -1,0 +1,66 @@
+[
+  {
+    "choice_index": 0,
+    "mood_type": "calm",
+    "emoji": "🌿",
+    "image_url": "https://picsum.photos/800/600?random=5f4f2616",
+    "user_message": "كلشي",
+    "timestamp": "2026-04-20T16:57:25.903054"
+  },
+  {
+    "choice_index": 2,
+    "mood_type": "neutral",
+    "emoji": null,
+    "image_url": "https://picsum.photos/800/600?random=0a1433c0",
+    "user_message": "مافي حدا بسمعني",
+    "timestamp": "2026-04-20T17:21:11.194642"
+  },
+  {
+    "choice_index": 2,
+    "mood_type": "neutral",
+    "emoji": null,
+    "image_url": "https://picsum.photos/800/600?random=0a1433c0",
+    "user_message": "مافي حدا بسمعني",
+    "timestamp": "2026-04-20T17:21:14.066961"
+  },
+  {
+    "choice_index": 1,
+    "mood_type": "stressed",
+    "emoji": "🌧️",
+    "image_url": "https://picsum.photos/800/600?random=76675d8a",
+    "user_message": "مافي حدا بسمعني",
+    "timestamp": "2026-04-20T17:21:14.684437"
+  },
+  {
+    "choice_index": 2,
+    "mood_type": "neutral",
+    "emoji": null,
+    "image_url": "https://picsum.photos/800/600?random=0a1433c0",
+    "user_message": "مافي حدا بسمعني",
+    "timestamp": "2026-04-20T17:21:16.418574"
+  },
+  {
+    "choice_index": 0,
+    "mood_type": "calm",
+    "emoji": "🌿",
+    "image_url": "https://picsum.photos/800/600?random=122f8f47",
+    "user_message": "مافي حدا بسمعني",
+    "timestamp": "2026-04-20T17:21:16.828286"
+  },
+  {
+    "choice_index": 2,
+    "mood_type": "neutral",
+    "emoji": null,
+    "image_url": "https://picsum.photos/800/600?random=0a1433c0",
+    "user_message": "مافي حدا بسمعني",
+    "timestamp": "2026-04-20T17:21:17.748955"
+  },
+  {
+    "choice_index": 2,
+    "mood_type": "neutral",
+    "emoji": null,
+    "image_url": "https://picsum.photos/800/600?random=0a1433c0",
+    "user_message": "مافي حدا بسمعني",
+    "timestamp": "2026-04-20T17:21:20.925329"
+  }
+]
