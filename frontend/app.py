@@ -4,7 +4,7 @@ import requests
 API_URL = "http://127.0.0.1:8000"
 
 st.set_page_config(
-    page_title="NAFSI",
+    page_title="WANEES",
     layout="centered",
     initial_sidebar_state="collapsed",
     page_icon="🧠"
@@ -179,7 +179,7 @@ if not st.session_state.session_started:
     st.markdown("""
         <div class="welcome-wrapper">
             <div class="robot-avatar">🤖</div>
-            <h1 class="welcome-title">NAFSI</h1>
+            <h1 class="welcome-title">WANEES</h1>
             <p class="welcome-subtitle">مساعدك الذكي للصحة النفسية<br>دعني أساعدك لتشعر بتحسن 💚</p>
         </div>
     """, unsafe_allow_html=True)
@@ -205,7 +205,7 @@ else:
     <div class="chat-header">
         <div class="header-avatar">🤖</div>
         <div class="header-text">
-            <h3>NAFSI</h3>
+            <h3>WANEES</h3>
             <p>مساعدك الذكي - متصل الآن ✨</p>
         </div>
     </div>
@@ -269,7 +269,7 @@ else:
     # Input area
     st.write("---")
     with st.form(key="input_form", clear_on_submit=True):
-        user_input = st.text_input("رسالتك", placeholder="اكتب رسالتك...", key="nafsi_user_input", label_visibility="collapsed")
+        user_input = st.text_input("رسالتك", placeholder="اكتب رسالتك...", key="wanees_user_input", label_visibility="collapsed")
         submit_input = st.form_submit_button("أرسل رسالة")
 
         if submit_input and user_input:

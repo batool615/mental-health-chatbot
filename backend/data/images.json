@@ -2,7 +2,7 @@
   {
     "choice_index": 0,
     "mood_type": "calm",
-    "emoji": "🌿",
+    "emoji": null,
     "image_url": "https://picsum.photos/800/600?random=5f4f2616",
     "user_message": "كلشي",
     "timestamp": "2026-04-20T16:57:25.903054"
@@ -62,5 +62,13 @@
     "image_url": "https://picsum.photos/800/600?random=0a1433c0",
     "user_message": "مافي حدا بسمعني",
     "timestamp": "2026-04-20T17:21:20.925329"
+  },
+  {
+    "choice_index": 2,
+    "mood_type": "neutral",
+    "emoji": null,
+    "image_url": "https://picsum.photos/800/600?random=2e5ccf5a",
+    "user_message": "عدة ظروف بمر فيها",
+    "timestamp": "2026-04-20T21:31:52.403666"
   }
 ]
