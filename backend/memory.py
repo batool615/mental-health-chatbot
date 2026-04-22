@@ -1,92 +1,113 @@
-import json
-import os
 from datetime import datetime
+from database import SessionLocal, Conversation, ImageSelection
 
-# Path to store conversations and images
-DB_DIR = "data"
-CONVERSATIONS_FILE = os.path.join(DB_DIR, "conversations.json")
-IMAGES_FILE = os.path.join(DB_DIR, "images.json")
-
-# Create data directory if it doesn't exist
-os.makedirs(DB_DIR, exist_ok=True)
-
-chat_history = []
-
-def _load_conversations():
-    """Load conversations from file"""
-    if os.path.exists(CONVERSATIONS_FILE):
-        try:
-            with open(CONVERSATIONS_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except:
-            return []
-    return []
-
-def _save_conversations(data):
-    """Save conversations to file"""
-    with open(CONVERSATIONS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-def _load_images():
-    """Load selected images from file"""
-    if os.path.exists(IMAGES_FILE):
-        try:
-            with open(IMAGES_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except:
-            return []
-    return []
-
-def _save_images(data):
-    """Save selected images to file"""
-    with open(IMAGES_FILE, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+# Get database session
+db = SessionLocal()
 
 def add_to_memory(user, bot):
-    """Add message to memory and save to file"""
-    global chat_history
-    
-    message = {
-        "user": user,
-        "bot": bot,
-        "timestamp": datetime.now().isoformat()
-    }
-    
-    chat_history.append(message)
-    
-    # Save to file
-    all_conversations = _load_conversations()
-    all_conversations.append(message)
-    _save_conversations(all_conversations)
-    
-    return message
+    """Add message to database"""
+    try:
+        conversation = Conversation(
+            user_message=user,
+            bot_response=bot,
+            timestamp=datetime.now()
+        )
+        db.add(conversation)
+        db.commit()
+        db.refresh(conversation)
+        
+        return {
+            "id": conversation.id,
+            "user": user,
+            "bot": bot,
+            "timestamp": conversation.timestamp.isoformat()
+        }
+    except Exception as e:
+        db.rollback()
+        print(f"Error adding to memory: {e}")
+        return None
 
 def save_image_choice(choice_index, image_metadata, message_text):
-    """Save selected image choice"""
-    image_record = {
-        "choice_index": choice_index,
-        "mood_type": image_metadata.get("mood_type"),
-        "emoji": image_metadata.get("emoji"),
-        "image_url": image_metadata.get("url"),
-        "user_message": message_text,
-        "timestamp": datetime.now().isoformat()
-    }
-    
-    # Save to file
-    all_images = _load_images()
-    all_images.append(image_record)
-    _save_images(all_images)
-    
-    return image_record
+    """Save selected image choice to database"""
+    try:
+        image_selection = ImageSelection(
+            choice_index=choice_index,
+            mood_type=image_metadata.get("mood_type"),
+            emoji=image_metadata.get("emoji"),
+            image_url=image_metadata.get("url"),
+            user_message=message_text,
+            timestamp=datetime.now()
+        )
+        db.add(image_selection)
+        db.commit()
+        db.refresh(image_selection)
+        
+        return {
+            "id": image_selection.id,
+            "choice_index": choice_index,
+            "mood_type": image_metadata.get("mood_type"),
+            "emoji": image_metadata.get("emoji"),
+            "image_url": image_metadata.get("url"),
+            "user_message": message_text,
+            "timestamp": image_selection.timestamp.isoformat()
+        }
+    except Exception as e:
+        db.rollback()
+        print(f"Error saving image choice: {e}")
+        return None
 
 def get_memory():
-    """Get current chat history"""
-    return chat_history
+    """Get current chat history from database"""
+    try:
+        conversations = db.query(Conversation).all()
+        return [
+            {
+                "id": c.id,
+                "user": c.user_message,
+                "bot": c.bot_response,
+                "timestamp": c.timestamp.isoformat()
+            }
+            for c in conversations
+        ]
+    except Exception as e:
+        print(f"Error getting memory: {e}")
+        return []
+
 
 def load_all_conversations():
-    """Load all stored conversations"""
-    return _load_conversations()
+    """Load all stored conversations from database"""
+    try:
+        conversations = db.query(Conversation).all()
+        return [
+            {
+                "id": c.id,
+                "user": c.user_message,
+                "bot": c.bot_response,
+                "timestamp": c.timestamp.isoformat()
+            }
+            for c in conversations
+        ]
+    except Exception as e:
+        print(f"Error loading conversations: {e}")
+        return []
+
 
 def load_all_images():
-    """Load all stored image selections"""
-    return _load_images()
+    """Load all stored image selections from database"""
+    try:
+        images = db.query(ImageSelection).all()
+        return [
+            {
+                "id": img.id,
+                "choice_index": img.choice_index,
+                "mood_type": img.mood_type,
+                "emoji": img.emoji,
+                "image_url": img.image_url,
+                "user_message": img.user_message,
+                "timestamp": img.timestamp.isoformat()
+            }
+            for img in images
+        ]
+    except Exception as e:
+        print(f"Error loading images: {e}")
+        return []

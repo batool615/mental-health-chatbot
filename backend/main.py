@@ -4,14 +4,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import Any, Dict, List
 
 import logging
+import os
 from llm import generate_response
 from analysis import analyze_state, analyze_choice
 from images import generate_images_with_metadata
 from memory import save_image_choice, add_to_memory
 
-# إعداد وتجهيز ملف السجلات (logger)
-import os
+# Initialize database
+from init_db import initialize_database
 os.makedirs("data", exist_ok=True)
+initialize_database()
+
+# إعداد وتجهيز ملف السجلات (logger)
 logging.basicConfig(
     filename='data/mental_health.log',
     level=logging.INFO,
@@ -206,3 +210,54 @@ def test_images():
         "images": images,
         "count": len(images)
     }
+
+# -------- DATABASE ANALYTICS & RETRIEVAL --------
+
+@app.get("/history/conversations")
+def get_conversation_history(limit: int = None):
+    """Get all stored conversations from database"""
+    from analytics import get_all_conversations
+    conversations = get_all_conversations(limit=limit)
+    return {
+        "count": len(conversations),
+        "conversations": conversations
+    }
+
+
+@app.get("/history/images")
+def get_image_history(limit: int = None):
+    """Get all stored image selections from database"""
+    from analytics import get_all_image_selections
+    images = get_all_image_selections(limit=limit)
+    return {
+        "count": len(images),
+        "images": images
+    }
+
+
+@app.get("/history/mood-stats")
+def get_mood_stats():
+    """Get statistics about mood selections"""
+    from analytics import get_mood_statistics
+    stats = get_mood_statistics()
+    return {
+        "mood_statistics": stats
+    }
+
+
+@app.get("/history/stats")
+def get_general_stats():
+    """Get general conversation statistics"""
+    from analytics import get_conversation_statistics, get_mood_statistics
+    conv_stats = get_conversation_statistics()
+    mood_stats = get_mood_statistics()
+    return {
+        "conversation_statistics": conv_stats,
+        "mood_statistics": mood_stats
+    }
+
+# -------- SERVER STARTUP --------
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8000)
